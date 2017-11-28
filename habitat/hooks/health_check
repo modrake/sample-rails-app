@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Default return is 0
+rc=0
+
+# Request to test if our index page can be retrieved
+{{pkgPathFor "core/curl"}}/bin/curl -sS --head --fail --max-time 1 httpd://localhost:{{cfg.app.port}}/
+
+case $? in
+	# 0 exist status means curl returned a 200 and everything is ok
+	0)
+		rc=0 ;;
+	# Anything else is critical
+	*)
+		rc=2 ;;
+esac
+
+exit $rc
